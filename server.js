@@ -1,14 +1,26 @@
 //server.js
-const http = require('http'),
+const express = require('express'),
+	server = express();
 
-makeServer = function (request,response){
-	response.writeHead(200,{'Content-Type':'text/plain'});
-	response.write('Hello world');
-	response.end();
-},
+server.set('port', process.env.PORT || 3000);
 
-server = http.createServer(makeServer);
+//Basic routes
+server.get('/', (request, response)=>{
+	response.send('Home page');
+});
 
+server.get('/about',(request,response)=>{
+	response.send('About page');
+});
+
+//Express error handling middleware
+server.use((request,response)=>{
+	response.type('text/plain');
+	response.status(505);
+	response.send('Error page');
+});
+
+//Binding to a port
 server.listen(3000, ()=>{
-	console.log('Node server created at port 3000');
+	console.log('Express server started at port 3000');
 });
